@@ -46,5 +46,12 @@ from takes
 group by sec_id, course_id, semester, year) as en;
 
 -- optional
+-- 1
+select takes.ID
+from takes
+where takes.grade = 'F%'
+group by takes.ID, course_id
+having min(grade) > 'F';
+
 
 
