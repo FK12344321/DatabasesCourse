@@ -1,4 +1,5 @@
-explain select distinct film.film_id, film.title, film.description
+--select distinct film.film_id, film.title, film.description
+select *
 from film
 join film_category
     on film_category.film_id = film.film_id
@@ -6,9 +7,9 @@ join category
     on category.category_id = film_category.category_id
 where film.rating in ('R', 'PG-13')
 and category.name in ('Horror', 'Sci-fi')
-film_id not in
-    (select film film_id from film
-    join inventory on film.film_id = inventory.film_id
+and film.film_id not in
+    (select film.film_id from film
+    left join inventory on film.film_id = inventory.film_id
     join rental on rental.inventory_id = inventory.inventory_id);
 
 -- The most expensive operation is sequential scan through
