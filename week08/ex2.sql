@@ -1,5 +1,5 @@
 --select distinct film.film_id, film.title, film.description
-select *
+explain select *
 from film
 join film_category
     on film_category.film_id = film.film_id
