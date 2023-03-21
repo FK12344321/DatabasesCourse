@@ -10,20 +10,17 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 cur.callproc('get_addresses', ())
 
-row = cur.fetchone()
-address = row[0]
+rows = cur.fetchall()
 geolocator = Nominatim(user_agent="my_app", timeout=10000)
-print(1)
-while address is not None:
+for row in rows:
+    address = row[0]
     location = geolocator.geocode(address)
-    latitude = 0 if location.latitude is None else location.latitude
-    longitude = 0 if location.longitude is None else location.longitude
-    print(1)
+    latitude = 0 if location is None else location.latitude
+    longitude = 0 if location is None else location.longitude
     cur.execute("UPDATE address set longitude = %s , latitude = %s where address = %s; ",
                 (longitude, latitude, address))
     print(f"{address} - ({latitude}, {longitude})")
-    row = cur.fetchone()
 
-
+conn.commit()
 cur.close()
 conn.close()
