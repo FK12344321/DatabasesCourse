@@ -1,0 +1,17 @@
+After the 4th step the value of Alice's username is different
+as we set the isolation level to "read uncommitted", so the
+terminal 2 reads its updated state of the table, while the terminal 1
+cannot see it, as the change is not committed.
+
+After the commit, the value of the Alice's username is the same (consistent)
+throughout the sessions
+
+After the 8th operation the terminal 2 fails to update the balance because
+it is already changed, but uncommitted.
+
+Isolation levels:
+
+Obviously, while reading with read committed isolation level, first terminal does
+not print out the updates made by the second terminal because it was not committed yet.
+At the same time, in repeatable read behaviour is the same. We still cannot read
+uncommitted updates from another transactions. 
