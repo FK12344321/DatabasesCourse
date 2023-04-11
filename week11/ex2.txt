@@ -1,0 +1,31 @@
+// task 1
+
+MATCH (p:Fighter)-[:beats]->()
+    WHERE p.weight IN ['155', '170', '185']
+    RETURN p.weight, collect(DISTINCT p.name)
+
+// task 2
+
+MATCH (f1:Fighter)-[b1:beats]->(f2:Fighter) - [b2:beats] -> (f3:Fighter where f1 = f3)
+    WITH count(b1) AS cnt1, count(b2) AS cnt2,f1 AS f11, f2 AS f22
+    WHERE cnt1 = 1 AND cnt2 = 1
+    RETURN f11, f22
+
+// task 3
+
+MATCH (f1:Fighter)-[:beats]->(f2:Fighter)
+    with count(f1) as cnt, f1.name as f
+    return f, cnt
+    order by cnt desc
+    limit 1
+
+// task 4
+
+match (f:Fighter)
+    with f,
+     [(f)-[:beats]->(f1) | f1.name] as l1,
+     [(f1)-[:beats]->(f) | f1.name] as l2,
+     CASE true WHEN [(f)-[:beats]->(f1) | f1.name] = [] THEN 1 ELSE 2 END as en  where l1 = [] or l2 = []
+    return collect(f.name), en
+
+
